@@ -19,7 +19,7 @@ vals <- read.csv("players.csv")
 
 # mapped_players <- player_dictionary_mapping()
 
-bio <- tm_player_bio(player_url = "https://www.transfermarkt.com/erling-haaland/profil/spieler/418560")
+bio <- tm_player_bio(player_url = "https://www.transfermarkt.com/lionel-messi/profil/spieler/28003")
 
 standard <- fb_player_season_stats("https://fbref.com/en/players/d70ce98e/Lionel-Messi", stat_type = 'standard')
 shooting <- fb_player_season_stats("https://fbref.com/en/players/d70ce98e/Lionel-Messi", stat_type = 'shooting')

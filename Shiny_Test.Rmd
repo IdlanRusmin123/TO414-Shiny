@@ -1,0 +1,30 @@
+---
+title: "Shiny Interface"
+author: "Muhamad Idlan Rusmin"
+date: "2023-12-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(shiny)
+library(rsconnect)
+```
+
+```{r}
+ui <- fluidPage(
+  sliderInput("date", "When should we deliver?",
+              as.Date("2020-09-16", "%Y-%m-%d"),
+              as.Date("2020-09-23", "%Y-%m-%d"),
+              as.Date("2020-09-17", "%Y-%m-%d"))
+)
+
+server <- function(input, output, session) {
+}
+
+shinyApp(ui, server)
+```
+

@@ -1,19 +1,3 @@
----
-title: "Shiny_Presentation"
-author: "Muhamad Idlan Rusmin"
-date: "2023-11-30"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r}
-# install.packages("worldfootballR")
-# install.packages("devtools")
-# devtools::install_github("JaseZiv/worldfootballR")
-
 library(worldfootballR)
 library(DescTools)
 library(tibble)
@@ -21,21 +5,18 @@ library(caret)
 library(randomForest)
 library(kernlab)
 library(rpart)
-```
 
-
-```{r}
 vals <- read.csv("players.csv")
 
 # mapped_players <- player_dictionary_mapping()
 
-# bio <- tm_player_bio("https://www.transfermarkt.com/gilbert-alvarez/profil/spieler/114010")
+# bio <- tm_player_bio(player_url = "https://www.transfermarkt.com/ollie-watkins/profil/spieler/324358")
 
-standard <- fb_player_season_stats("https://fbref.com/en/players/aed3a70f/Ollie-Watkins", stat_type = 'standard', time_pause = 0)
-shooting <- fb_player_season_stats("https://fbref.com/en/players/aed3a70f/Ollie-Watkins", stat_type = 'shooting', time_pause = 0)
-gca <- fb_player_season_stats("https://fbref.com/en/players/aed3a70f/Ollie-Watkins", stat_type = 'gca', time_pause = 0)
-passing <- fb_player_season_stats("https://fbref.com/en/players/aed3a70f/Ollie-Watkins", stat_type = 'passing', time_pause = 0)
-possession <- fb_player_season_stats("https://fbref.com/en/players/aed3a70f/Ollie-Watkins", stat_type = 'possession', time_pause = 0)
+standard <- fb_player_season_stats(fbref, stat_type = 'standard', time_pause = 0)
+shooting <- fb_player_season_stats(fbref, stat_type = 'shooting', time_pause = 0)
+gca <- fb_player_season_stats(fbref, stat_type = 'gca', time_pause = 0)
+passing <- fb_player_season_stats(fbref, stat_type = 'passing', time_pause = 0)
+possession <- fb_player_season_stats(fbref, stat_type = 'possession', time_pause = 0)
 
 # Fill na as 0
 standard[is.na(standard)] <- 0
@@ -43,9 +24,6 @@ shooting[is.na(shooting)] <- 0
 gca[is.na(gca)] <- 0
 passing[is.na(passing)] <- 0
 possession[is.na(possession)] <- 0
-```
-
-```{r}
 
 total_goals <- sum(standard[which(standard$Season == "2022-2023"), "Gls"])
 total_assists <- sum(standard[which(standard$Season == "2022-2023"), "Ast"])
@@ -63,27 +41,6 @@ total_shots_target <- sum(shooting[which(shooting$Season == "2022-2023"), "SoT_S
 
 passes_completed <- sum(passing[which(passing$Season == "2022-2023"), "Cmp_Total"])
 passes_attempted <- sum(passing[which(passing$Season == "2022-2023"), "Att_Total"])
-
-
-# goals_per90 <- total_goals/total_mins_per_90
-# assists_per90 <- total_assists/total_mins_per_90
-# goals_pens_per90 <- total_goals_pens/total_mins_per_90
-# xg_per90 <- total_xg/total_mins_per_90
-# xa_per90 <- total_xa/total_mins_per_90
-# sca_per90 <- total_sca/total_mins_per_90
-# npxg_per90 <- total_npxg/total_mins_per_90
-# shots_total_per90 <- total_shots/total_mins_per_90
-# shots_on_target_per90 <- total_shots_target/total_mins_per_90
-# gca_per90 <- total_gca/total_mins_per_90
-# age <- as.numeric(bio$age[1])
-# foot <- bio$foot
-# height <- bio$height
-# minutes <- sum(standard[which(standard$Season == "2022-2023"), "Min_Time"])
-# games <- sum(standard[which(standard$Season == "2022-2023"), "MP"])
-# games_starts <- sum(standard[which(standard$Season == "2022-2023"), "Starts_Time"])
-# passes_pct <- passes_completed/passes_attempted
-# touches_att_3rd <- sum(possession[which(possession$Season == "2022-2023"), "Att 3rd_Touches"])
-# value <- as.numeric(vals[which(vals$name == bio$player_name), "market_value_in_eur"])
 
 test_data <- data.frame(goals_per90 = total_goals/total_mins_per_90,
                         assists_per90 = total_assists/total_mins_per_90,
@@ -111,9 +68,6 @@ test_data <- data.frame(goals_per90 = total_goals/total_mins_per_90,
 
 if(any(is.na(test_data))) {stop("Missing predictors detected. Please choose another player.")}
 
-```
-
-```{r}
 testmm <- test_data
 testmm <- add_column(testmm, foot4 = 0, .after = "foot")
 testmm <- add_column(testmm, foot3 = 0, .after = "foot")
@@ -135,20 +89,6 @@ testmm$foot <- NULL
 preProc <- readRDS("PreProc.rds")
 
 test_norm <- predict(preProc, testmm)
-```
-
-```{r}
-# lin_m <- readRDS("Linear_Reg.rds")
-# tree_m <- readRDS("Reg_Tree.rds")
-# rf_m <- readRDS("Rand_For.rds")
-# ann_m <- readRDS("ANN.rds")
-# svm_m <- readRDS("SVM.rds")
-# knn_m <- readRDS("KNN.rds")
-# stacked_m <- readRDS("Stacked.rds")
-```
-
-```{r}
-
 
 lin_p <- predict(lin_m, testmm)
 tree_p <- predict(tree_m, testmm)
@@ -157,16 +97,12 @@ rf_p <- predict(rf_m, testmm)
 ann_p <- predict(ann_m, test_norm)
 svm_p <- predict(svm_m, test_norm[-21])
 knn_p <- predict(knn_m, test_norm[-21])
-```
 
-```{r}
 stacked <- data.frame(lin = lin_p, tree = tree_p, rf = rf_p, ann = ann_p, svm = svm_p, knn = knn_p, value = test_data$value)
 
 stacked_p <- predict(stacked_m, stacked)
 
 options(scipen = 100, digits = 4)
 
-as.numeric(stacked_p)
-stacked$value
-```
-
+prediction <- as.numeric(stacked_p)
+given <- stacked$value

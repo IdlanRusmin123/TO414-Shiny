@@ -1,0 +1,67 @@
+---
+title: "Shiny_Presentation"
+author: "Muhamad Idlan Rusmin"
+date: "2023-11-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# install.packages("worldfootballR")
+# install.packages("devtools")
+# devtools::install_github("JaseZiv/worldfootballR")
+library(worldfootballR)
+
+vals <- read.csv("players.csv")
+
+# mapped_players <- player_dictionary_mapping()
+
+bio <- tm_player_bio(player_url = "https://www.transfermarkt.com/erling-haaland/profil/spieler/418560")
+
+standard <- fb_player_season_stats("https://fbref.com/en/players/d70ce98e/Lionel-Messi", stat_type = 'standard')
+shooting <- fb_player_season_stats("https://fbref.com/en/players/d70ce98e/Lionel-Messi", stat_type = 'shooting')
+gca <- fb_player_season_stats("https://fbref.com/en/players/d70ce98e/Lionel-Messi", stat_type = 'gca')
+
+# Fill na as 0
+standard[is.na(standard)] <- 0
+shooting[is.na(shooting)] <- 0
+gca[is.na(gca)] <- 0
+```
+
+```{r}
+library(DescTools)
+
+total_goals <- sum(standard[which(standard$Season == "2022-2023"), "Gls"])
+total_assists <- sum(standard[which(standard$Season == "2022-2023"), "Ast"])
+total_goals_pens <- sum(standard[which(standard$Season == "2022-2023"), "PK"])
+total_xg <- sum(standard[which(standard$Season == "2022-2023"), "xG_Expected"])
+total_xa <- sum(standard[which(standard$Season == "2022-2023"), "xAG_Expected"])
+total_npxg <- sum(standard[which(standard$Season == "2022-2023"), "npxG_Expected"])
+total_mins_per_90 <- sum(standard[which(standard$Season == "2022-2023"), "Mins_Per_90_Time"])
+
+total_sca <- sum(gca[which(gca$Season == "2022-2023"), "SCA_SCA"])
+total_gca <- sum(gca[which(gca$Season == "2022-2023"), "GCA_GCA"])
+
+total_shots <- sum(shooting[which(shooting$Season == "2022-2023"), "Sh_Standard"])
+total_shots_target <- sum(shooting[which(shooting$Season == "2022-2023"), "SoT_Standard"])
+
+
+goals_per90 <- total_goals/total_mins_per_90
+assists_per90 <- total_assists/total_mins_per_90
+goals_pens_per90 <- total_goals_pens/total_mins_per_90
+xg_per90 <- total_xg/total_mins_per_90
+xa_per90 <- total_xa/total_mins_per_90
+sca_per90 <- total_sca/total_mins_per_90
+npxg_per90 <- total_npxg/total_mins_per_90
+shots_total_per90 <- total_shots/total_mins_per_90
+shots_on_target_per90 <- total_shots_target/total_mins_per_90
+gca_per90 <- total_gca/total_mins_per_90
+age <- as.numeric(bio$age[1])
+foot <- bio$foot
+
+value <- as.numeric(vals[which(vals$name == bio$player_name), "market_value_in_eur"])
+```
+

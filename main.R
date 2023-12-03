@@ -151,7 +151,7 @@ stacked_p <- predict(stacked_m, stacked)
 
 options(scipen = 100, digits = 4)
 
-pred <<- as.numeric(stacked_p) * (1.26 ^ 3)
+pred <<- as.numeric(stacked_p) * (1.1 ^ 3)
 given <<- stacked$value
 
 return("Success!")

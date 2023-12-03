@@ -107,13 +107,13 @@ testmm <- add_column(testmm, foot3 = 0, .after = "foot")
 testmm <- add_column(testmm, foot2 = 0, .after = "foot")
 
 if(testmm[1, "foot"] == "both") {
-  # test_data$foot <- factor(2, levels = c("2", "3", "4"))
+  test_data$foot <- factor(2, levels = c("2", "3", "4"))
   testmm$foot2 <- 1
 } else if(testmm[1, "foot"] == "left") {
-  # test_data$foot <- factor(3, levels = c("2", "3", "4"))
+  test_data$foot <- factor(3, levels = c("2", "3", "4"))
   testmm$foot3 <- 1
 } else {
-  # test_data$foot <- factor(4, levels = c("2", "3", "4"))
+  test_data$foot <- factor(4, levels = c("2", "3", "4"))
   testmm$foot4 <- 1
 }
 
@@ -123,13 +123,13 @@ preProc <- readRDS("PreProc.rds")
 
 test_norm <- predict(preProc, testmm)
 
-lin_p <- predict(lin_m, testmm)
-tree_p <- predict(tree_m, testmm)
-rf_p <- predict(rf_m, testmm)
+lin_p <- predict(lin_m, test_data)
+tree_p <- predict(tree_m, test_data)
+rf_p <- predict(rf_m, test_data)
 
 ann_p <- predict(ann_m, test_norm)
-svm_p <- predict(svm_m, test_norm[-21])
-knn_p <- predict(knn_m, test_norm[-21])
+svm_p <- predict(svm_m, test_norm)
+knn_p <- predict(knn_m, test_norm)
 
 stacked <- data.frame(lin = lin_p, tree = tree_p, rf = rf_p, ann = ann_p, svm = svm_p, knn = knn_p, value = test_data$value)
 

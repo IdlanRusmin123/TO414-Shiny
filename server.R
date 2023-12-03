@@ -2,8 +2,11 @@ library(shiny)
 
 function(input, output) {
   
+  success <- eventReactive(input$simulate, {
+    fun1(input$name_given)
+  })
+  
   x1 <- eventReactive(input$simulate, {
-    fun1(input$fbref)
     table_out1
   })
   
@@ -13,6 +16,10 @@ function(input, output) {
   
   x3 <- eventReactive(input$simulate, {
     paste("test", pred)
+  })
+  
+  output$run <- renderText({
+    success()
   })
   
   output$table1 <- renderTable(x1())

@@ -9,9 +9,10 @@ fluidPage(
   mainPanel(
     h2("tuto_title"),
     h5("tuto_text"),
-    textInput("fbref", "FBRef Link", value = "https://fbref.com/en/players/aed3a70f/Ollie-Watkins"),
+    textInput("name_given", "Name", value = "Ollie Watkins"),
     
     actionButton("simulate", "Simulate!"),
+    textOutput("run"),
     tableOutput("table1"),
     tableOutput("table2"),
     textOutput("prediction")

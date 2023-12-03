@@ -17,16 +17,30 @@ stacked_m <- readRDS(gzcon(url("https://raw.githubusercontent.com/IdlanRusmin123
 
 vals <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/players.csv")
 
+big5_player_standard <- read.csv("standard.csv")
+big5_player_shooting <- read.csv("shooting.csv")
+big5_player_gca <- read.csv("gca.csv")
+big5_player_passing <- read.csv("passing.csv")
+big5_player_possession <- read.csv("possession.csv")
+
 # mapped_players <- player_dictionary_mapping()
 
 # bio <- tm_player_bio(player_url = "https://www.transfermarkt.com/ollie-watkins/profil/spieler/324358")
 
-fun1 <- function(fbref) {
-standard <- fb_player_season_stats(fbref, stat_type = 'standard', time_pause = 0)
-shooting <- fb_player_season_stats(fbref, stat_type = 'shooting', time_pause = 0)
-gca <- fb_player_season_stats(fbref, stat_type = 'gca', time_pause = 0)
-passing <- fb_player_season_stats(fbref, stat_type = 'passing', time_pause = 0)
-possession <- fb_player_season_stats(fbref, stat_type = 'possession', time_pause = 0)
+fun1 <- function(name_input) {
+# standard <- fb_player_season_stats(fbref, stat_type = 'standard', time_pause = runif(1, 0, 1.5))
+# shooting <- fb_player_season_stats(fbref, stat_type = 'shooting', time_pause = runif(1, 0, 1.5))
+# gca <- fb_player_season_stats(fbref, stat_type = 'gca', time_pause = runif(1, 0, 1.5))
+# passing <- fb_player_season_stats(fbref, stat_type = 'passing', time_pause = runif(1, 0, 1.5))
+# possession <- fb_player_season_stats(fbref, stat_type = 'possession', time_pause = runif(1, 0, 1.5))
+
+standard <- big5_player_standard[which(big5_player_standard$Player == name_input), ]
+shooting <- big5_player_shooting[which(big5_player_shooting$Player == name_input), ]
+gca <- big5_player_gca[which(big5_player_gca$Player == name_input), ]
+passing <- big5_player_passing[which(big5_player_passing$Player == name_input), ]
+possession <- big5_player_possession[which(big5_player_possession$Player == name_input), ]
+
+if (dim(standard)[1] == 0) {return("Please write your name correctly or pick a person from the Big 5 league during 22/23 season")}
 
 # Fill na as 0
 standard[is.na(standard)] <- 0
@@ -35,22 +49,22 @@ gca[is.na(gca)] <- 0
 passing[is.na(passing)] <- 0
 possession[is.na(possession)] <- 0
 
-total_goals <- sum(standard[which(standard$Season == "2022-2023"), "Gls"])
-total_assists <- sum(standard[which(standard$Season == "2022-2023"), "Ast"])
-total_goals_pens <- sum(standard[which(standard$Season == "2022-2023"), "PK"])
-total_xg <- sum(standard[which(standard$Season == "2022-2023"), "xG_Expected"])
-total_xa <- sum(standard[which(standard$Season == "2022-2023"), "xAG_Expected"])
-total_npxg <- sum(standard[which(standard$Season == "2022-2023"), "npxG_Expected"])
-total_mins_per_90 <- sum(standard[which(standard$Season == "2022-2023"), "Mins_Per_90_Time"])
+total_goals <- as.numeric(standard[, "Gls"])
+total_assists <- as.numeric(standard[, "Ast"])
+total_goals_pens <- as.numeric(standard[, "PK"])
+total_xg <- as.numeric(standard[, "xG_Expected"])
+total_xa <- as.numeric(standard[, "xAG_Expected"])
+total_npxg <- as.numeric(standard[, "npxG_Expected"])
+total_mins_per_90 <- as.numeric(standard[, "Mins_Per_90_Playing"])
 
-total_sca <- sum(gca[which(gca$Season == "2022-2023"), "SCA_SCA"])
-total_gca <- sum(gca[which(gca$Season == "2022-2023"), "GCA_GCA"])
+total_sca <- as.numeric(gca[, "SCA_SCA"])
+total_gca <- as.numeric(gca[, "GCA_GCA"])
 
-total_shots <- sum(shooting[which(shooting$Season == "2022-2023"), "Sh_Standard"])
-total_shots_target <- sum(shooting[which(shooting$Season == "2022-2023"), "SoT_Standard"])
+total_shots <- as.numeric(shooting[, "Sh_Standard"])
+total_shots_target <- as.numeric(shooting[, "SoT_Standard"])
 
-passes_completed <- sum(passing[which(passing$Season == "2022-2023"), "Cmp_Total"])
-passes_attempted <- sum(passing[which(passing$Season == "2022-2023"), "Att_Total"])
+passes_completed <- as.numeric(passing[, "Cmp_Total"])
+passes_attempted <- as.numeric(passing[, "Att_Total"])
 
 test_data <- data.frame(goals_per90 = total_goals/total_mins_per_90,
                         assists_per90 = total_assists/total_mins_per_90,
@@ -63,22 +77,22 @@ test_data <- data.frame(goals_per90 = total_goals/total_mins_per_90,
                         shots_on_target_per90 = total_shots_target/total_mins_per_90,
                         gca_per90 = total_gca/total_mins_per_90,
                         # age = as.numeric(bio$age[1]),
-                        age = standard[which(standard$Season == "2022-2023"), "Age"][1],
+                        age = as.numeric(standard[, "Age"]),
                         # foot = factor(bio$foot, levels = c("", "both", "left", "right")),
-                        foot = factor(vals[which(vals$name == standard$player_name[1]), "foot"], levels = c("", "both", "left", "right")),
+                        foot = factor(vals[which(vals$name == name_input), "foot"], levels = c("", "both", "left", "right")),
                         # height = bio$height * 100,
-                        height = as.numeric(vals[which(vals$name == standard$player_name[1]), "height_in_cm"]),
-                        minutes = sum(standard[which(standard$Season == "2022-2023"), "Min_Time"]),
-                        games = sum(standard[which(standard$Season == "2022-2023"), "MP"]),
-                        games_starts = sum(standard[which(standard$Season == "2022-2023"), "Starts_Time"]),
+                        height = as.numeric(vals[which(vals$name == name_input), "height_in_cm"]),
+                        minutes = as.numeric(standard[, "Min_Playing"]),
+                        games = as.numeric(standard[, "MP_Playing"]),
+                        games_starts = as.numeric(standard[, "Starts_Playing"]),
                         passes_pct = (passes_completed/passes_attempted) * 100,
-                        touches_att_3rd = sum(possession[which(possession$Season == "2022-2023"), "Att 3rd_Touches"]),
-                        value = as.numeric(vals[which(vals$name == standard$player_name[1]), "market_value_in_eur"])
+                        touches_att_3rd = as.numeric(possession[, "Att.3rd_Touches"]),
+                        value = as.numeric(vals[which(vals$name == name_input), "market_value_in_eur"])
                         )
 
-if(any(is.na(test_data))) {stop("Missing predictors detected. Please choose another player.")}
+if(any(is.na(test_data))) {return("Missing predictors detected. Please choose another player.")}
 
-table_out1 <<- data.frame(Name = standard$player_name[1],
+table_out1 <<- data.frame(Name = name_input,
                          Age = test_data$age[1],
                          Height_in_cm = test_data$height[1],
                          Foot = test_data$foot[1],
@@ -139,4 +153,6 @@ options(scipen = 100, digits = 4)
 
 pred <<- as.numeric(stacked_p)
 given <<- stacked$value
+
+return("Success!")
 }

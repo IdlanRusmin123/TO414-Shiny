@@ -23,9 +23,9 @@ vals <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/m
 
 fun1 <- function(fbref) {
 standard <- fb_player_season_stats(fbref, stat_type = 'standard')
-shooting <- fb_player_season_stats(fbref, stat_type = 'shooting')
-gca <- fb_player_season_stats(fbref, stat_type = 'gca')
-passing <- fb_player_season_stats(fbref, stat_type = 'passing')
+shooting <- fb_player_season_stats(fbref, stat_type = 'shooting', time_pause = 1)
+gca <- fb_player_season_stats(fbref, stat_type = 'gca', time_pause = 2)
+passing <- fb_player_season_stats(fbref, stat_type = 'passing', time_pause = 1.5)
 possession <- fb_player_season_stats(fbref, stat_type = 'possession')
 
 # Fill na as 0

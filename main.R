@@ -123,17 +123,17 @@ preProc <- readRDS("PreProc.rds")
 
 test_norm <- predict(preProc, testmm)
 
-lin_p <- caret::predict(lin_m, testmm)
-tree_p <- caret::predict(tree_m, testmm)
-rf_p <- caret::predict(rf_m, testmm)
+lin_p <- predict(lin_m, testmm)
+tree_p <- predict(tree_m, testmm)
+rf_p <- predict(rf_m, testmm)
 
-ann_p <- caret::predict(ann_m, test_norm)
-svm_p <- caret::predict(svm_m, test_norm[-21])
-knn_p <- caret::predict(knn_m, test_norm[-21])
+ann_p <- predict(ann_m, test_norm)
+svm_p <- predict(svm_m, test_norm[-21])
+knn_p <- predict(knn_m, test_norm[-21])
 
 stacked <- data.frame(lin = lin_p, tree = tree_p, rf = rf_p, ann = ann_p, svm = svm_p, knn = knn_p, value = test_data$value)
 
-stacked_p <- caret::predict(stacked_m, stacked)
+stacked_p <- predict(stacked_m, stacked)
 
 options(scipen = 100, digits = 4)
 

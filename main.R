@@ -22,11 +22,11 @@ vals <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/m
 # bio <- tm_player_bio(player_url = "https://www.transfermarkt.com/ollie-watkins/profil/spieler/324358")
 
 fun1 <- function(fbref) {
-standard <- fb_player_season_stats(fbref, stat_type = 'standard', time_pause = 0)
-shooting <- fb_player_season_stats(fbref, stat_type = 'shooting', time_pause = 0)
-gca <- fb_player_season_stats(fbref, stat_type = 'gca', time_pause = 0)
-passing <- fb_player_season_stats(fbref, stat_type = 'passing', time_pause = 0)
-possession <- fb_player_season_stats(fbref, stat_type = 'possession', time_pause = 0)
+standard <- fb_player_season_stats(fbref, stat_type = 'standard')
+shooting <- fb_player_season_stats(fbref, stat_type = 'shooting')
+gca <- fb_player_season_stats(fbref, stat_type = 'gca')
+passing <- fb_player_season_stats(fbref, stat_type = 'passing')
+possession <- fb_player_season_stats(fbref, stat_type = 'possession')
 
 # Fill na as 0
 standard[is.na(standard)] <- 0

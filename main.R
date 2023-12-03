@@ -120,19 +120,19 @@ testmm$foot <- NULL
 
 preProc <- readRDS("PreProc.rds")
 
-test_norm <- predict(preProc, testmm)
+test_norm <- stats::predict(preProc, testmm)
 
-lin_p <- predict(lin_m, testmm)
-tree_p <- predict(tree_m, testmm)
-rf_p <- predict(rf_m, testmm)
+lin_p <- stats::predict(lin_m, testmm)
+tree_p <- stats::predict(tree_m, testmm)
+rf_p <- stats::predict(rf_m, testmm)
 
-ann_p <- predict(ann_m, test_norm)
-svm_p <- predict(svm_m, test_norm[-21])
-knn_p <- predict(knn_m, test_norm[-21])
+ann_p <- stats::predict(ann_m, test_norm)
+svm_p <- stats::predict(svm_m, test_norm[-21])
+knn_p <- stats::predict(knn_m, test_norm[-21])
 
 stacked <- data.frame(lin = lin_p, tree = tree_p, rf = rf_p, ann = ann_p, svm = svm_p, knn = knn_p, value = test_data$value)
 
-stacked_p <- predict(stacked_m, stacked)
+stacked_p <- stats::predict(stacked_m, stacked)
 
 options(scipen = 100, digits = 4)
 

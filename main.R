@@ -5,6 +5,7 @@ library(caret)
 library(randomForest)
 library(kernlab)
 library(rpart)
+library(neuralnet)
 
 lin_m <- readRDS(gzcon(url("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/Linear_Reg.rds")))
 tree_m <- readRDS(gzcon(url("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/Reg_Tree.rds")))

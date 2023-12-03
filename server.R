@@ -7,15 +7,24 @@ function(input, output) {
   })
   
   x1 <- eventReactive(input$simulate, {
-    table_out1
+    if(success() == "Success!") {
+      table_out1
+    }
+    
   })
   
   x2 <- eventReactive(input$simulate, {
-    table_out2
+    if(success() == "Success!") {
+      table_out2
+    }
+    
   })
   
   x3 <- eventReactive(input$simulate, {
-    paste("test", pred)
+    if(success() == "Success!") {
+      paste("test", pred)
+    }
+    
   })
   
   output$run <- renderText({

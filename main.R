@@ -49,22 +49,22 @@ gca[is.na(gca)] <- 0
 passing[is.na(passing)] <- 0
 possession[is.na(possession)] <- 0
 
-total_goals <- as.numeric(standard[, "Gls"])
-total_assists <- as.numeric(standard[, "Ast"])
-total_goals_pens <- as.numeric(standard[, "PK"])
-total_xg <- as.numeric(standard[, "xG_Expected"])
-total_xa <- as.numeric(standard[, "xAG_Expected"])
-total_npxg <- as.numeric(standard[, "npxG_Expected"])
-total_mins_per_90 <- as.numeric(standard[, "Mins_Per_90_Playing"])
+total_goals <- as.numeric(sum(standard[which(standard$Player == name_input), "Gls"]))
+total_assists <- as.numeric(sum(standard[which(standard$Player == name_input), "Ast"]))
+total_goals_pens <- as.numeric(sum(standard[which(standard$Player == name_input), "PK"]))
+total_xg <- as.numeric(sum(standard[which(standard$Player == name_input), "xG_Expected"]))
+total_xa <- as.numeric(sum(standard[which(standard$Player == name_input), "xAG_Expected"]))
+total_npxg <- as.numeric(sum(standard[which(standard$Player == name_input), "npxG_Expected"]))
+total_mins_per_90 <- as.numeric(sum(standard[which(standard$Player == name_input), "Mins_Per_90_Playing"]))
 
-total_sca <- as.numeric(gca[, "SCA_SCA"])
-total_gca <- as.numeric(gca[, "GCA_GCA"])
+total_sca <- as.numeric(sum(gca[which(gca$Player == name_input), "SCA_SCA"]))
+total_gca <- as.numeric(sum(gca[which(gca$Player == name_input), "GCA_GCA"]))
 
-total_shots <- as.numeric(shooting[, "Sh_Standard"])
-total_shots_target <- as.numeric(shooting[, "SoT_Standard"])
+total_shots <- as.numeric(sum(shooting[which(shooting$Player == name_input), "Sh_Standard"]))
+total_shots_target <- as.numeric(sum(shooting[which(shooting$Player == name_input), "SoT_Standard"]))
 
-passes_completed <- as.numeric(passing[, "Cmp_Total"])
-passes_attempted <- as.numeric(passing[, "Att_Total"])
+passes_completed <- as.numeric(sum(passing[which(passing$Player == name_input), "Cmp_Total"]))
+passes_attempted <- as.numeric(sum(passing[which(passing$Player == name_input), "Att_Total"]))
 
 test_data <- data.frame(goals_per90 = total_goals/total_mins_per_90,
                         assists_per90 = total_assists/total_mins_per_90,
@@ -77,16 +77,16 @@ test_data <- data.frame(goals_per90 = total_goals/total_mins_per_90,
                         shots_on_target_per90 = total_shots_target/total_mins_per_90,
                         gca_per90 = total_gca/total_mins_per_90,
                         # age = as.numeric(bio$age[1]),
-                        age = as.numeric(standard[, "Age"]),
+                        age = as.numeric(standard[1, "Age"]),
                         # foot = factor(bio$foot, levels = c("", "both", "left", "right")),
                         foot = factor(vals[which(vals$name == name_input), "foot"], levels = c("", "both", "left", "right")),
                         # height = bio$height * 100,
                         height = as.numeric(vals[which(vals$name == name_input), "height_in_cm"]),
-                        minutes = as.numeric(standard[, "Min_Playing"]),
-                        games = as.numeric(standard[, "MP_Playing"]),
-                        games_starts = as.numeric(standard[, "Starts_Playing"]),
+                        minutes = as.numeric(sum(standard[which(standard$Player == name_input), "Min_Playing"])),
+                        games = as.numeric(sum(standard[which(standard$Player == name_input), "MP_Playing"])),
+                        games_starts = as.numeric(sum(standard[which(standard$Player == name_input), "Starts_Playing"])),
                         passes_pct = (passes_completed/passes_attempted) * 100,
-                        touches_att_3rd = as.numeric(possession[, "Att.3rd_Touches"]),
+                        touches_att_3rd = as.numeric(sum(possession[which(possession$Player == name_input), "Att.3rd_Touches"])),
                         value = as.numeric(vals[which(vals$name == name_input), "market_value_in_eur"])
                         )
 
@@ -151,7 +151,7 @@ stacked_p <- predict(stacked_m, stacked)
 
 options(scipen = 100, digits = 4)
 
-pred <<- as.numeric(stacked_p)
+pred <<- as.numeric(stacked_p) * (1.05 ^ 3)
 given <<- stacked$value
 
 return("Success!")

@@ -17,11 +17,11 @@ stacked_m <- readRDS(gzcon(url("https://raw.githubusercontent.com/IdlanRusmin123
 
 vals <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/players.csv")
 
-big5_player_standard <- read.csv("standard.csv")
-big5_player_shooting <- read.csv("shooting.csv")
-big5_player_gca <- read.csv("gca.csv")
-big5_player_passing <- read.csv("passing.csv")
-big5_player_possession <- read.csv("possession.csv")
+big5_player_standard <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/standard.csv")
+big5_player_shooting <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/shooting.csv")
+big5_player_gca <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/gca.csv")
+big5_player_passing <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/passing.csv")
+big5_player_possession <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/possession.csv")
 
 # mapped_players <- player_dictionary_mapping()
 

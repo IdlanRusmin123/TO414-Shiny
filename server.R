@@ -1,9 +1,9 @@
 library(shiny)
 
 function(input, output) {
-  url <- a("fbref", href="https://fbref.com/en/")
+  url <- a("https://fbref.com/en/", href="https://fbref.com/en/")
   output$tab <- renderUI({
-    tagList(" You can refer to", url, "for searching and get their full name with correct case and accent")
+    tagList("You can refer to fbref (", url, ") for searching and get their full name with correct case and accent")
   })
   
   success <- eventReactive(input$simulate, {

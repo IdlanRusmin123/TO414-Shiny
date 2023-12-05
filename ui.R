@@ -10,8 +10,7 @@ fluidPage(
     h2("Description:"),
     p("This Shiny app is designed to estimate the value of strikers in the Big 5
       Leagues (EPL, Bundesliga, La Liga, Serie A and Ligue 1). To use this app,
-      just put the full name (Case Sensitive and also Accent sensitive! Mbappé 
-      need to be spelled with é, not e) below and click simulate. It has been 
+      just put the full name (Not Case Sensitive and Accent Sensitive) below and click simulate. It has been 
       defaulted to Ollie Watkins, the striker of Aston Villa but you can just 
       change it."),
     uiOutput("tab"),

@@ -23,6 +23,14 @@ big5_player_gca <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO
 big5_player_passing <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/passing.csv")
 big5_player_possession <- read.csv("https://raw.githubusercontent.com/IdlanRusmin123/TO414-Shiny/master/possession.csv")
 
+vals$name <- tolower(iconv(vals$name, to='ASCII//TRANSLIT'))
+
+big5_player_standard$Player <- tolower(iconv(big5_player_standard$Player, to='ASCII//TRANSLIT'))
+big5_player_shooting$Player <- tolower(iconv(big5_player_shooting$Player, to='ASCII//TRANSLIT'))
+big5_player_gca$Player <- tolower(iconv(big5_player_gca$Player, to='ASCII//TRANSLIT'))
+big5_player_passing$Player <- tolower(iconv(big5_player_passing$Player, to='ASCII//TRANSLIT'))
+big5_player_possession$Player <- tolower(iconv(big5_player_possession$Player, to='ASCII//TRANSLIT'))
+
 # mapped_players <- player_dictionary_mapping()
 
 # bio <- tm_player_bio(player_url = "https://www.transfermarkt.com/ollie-watkins/profil/spieler/324358")
@@ -33,6 +41,8 @@ fun1 <- function(name_input) {
 # gca <- fb_player_season_stats(fbref, stat_type = 'gca', time_pause = runif(1, 0, 1.5))
 # passing <- fb_player_season_stats(fbref, stat_type = 'passing', time_pause = runif(1, 0, 1.5))
 # possession <- fb_player_season_stats(fbref, stat_type = 'possession', time_pause = runif(1, 0, 1.5))
+  
+name_input <- tolower(iconv(name_input, to='ASCII//TRANSLIT'))
 
 standard <- big5_player_standard[which(big5_player_standard$Player == name_input), ]
 shooting <- big5_player_shooting[which(big5_player_shooting$Player == name_input), ]
@@ -92,8 +102,7 @@ test_data <- data.frame(goals_per90 = total_goals/total_mins_per_90,
 
 if(any(is.na(test_data))) {return("Missing predictors detected. Please choose another player.")}
 
-table_out1 <<- data.frame(Name = name_input,
-                         Age = test_data$age[1],
+table_out1 <<- data.frame(Age = test_data$age[1],
                          Height_in_cm = test_data$height[1],
                          Foot = test_data$foot[1],
                          Goals_Per_90 = test_data$goals_per90[1],
@@ -101,11 +110,11 @@ table_out1 <<- data.frame(Name = name_input,
                          Penalty_Goals_Per_90 = test_data$goals_pens_per90[1],
                          Expected_Goals_Per_90 = test_data$xg_per90[1],
                          Expected_Assists_Per_90 = test_data$xa_per90[1],
-                         Shot_Creating_Action_Per_90 = test_data$sca_per90[1]
+                         Shot_Creating_Action_Per_90 = test_data$sca_per90[1],
+                         Non_Penalty_Expected_Goals_Per_90 = test_data$npxg_per90[1]
 )
 
-table_out2 <<- data.frame(Non_Penalty_Expected_Goals_Per_90 = test_data$npxg_per90[1],
-                         Shots_Per_90 = test_data$shots_total_per90[1],
+table_out2 <<- data.frame(Shots_Per_90 = test_data$shots_total_per90[1],
                          Shots_On_Target_Per_90 = test_data$shots_on_target_per90[1],
                          Goal_Creating_Action_Per_90 = test_data$gca_per90[1],
                          Minutes_Played = test_data$minutes[1],
